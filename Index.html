@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Xiao-erDough</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #0F0E17;
+  --surface:   #1A1825;
+  --surface2:  #221F30;
+  --surface3:  #2B2840;
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.12);
+  --text:      #EEEAF7;
+  --muted:     #7E7A9A;
+  --muted2:    #B0ABCA;
+  --accent:    #FF6B6B;
+  --accent2:   #FF9A5C;
+  --green:     #4ECDC4;
+  --green-dim: rgba(78,205,196,0.15);
+  --amber:     #FFD166;
+  --violet:    #A78BFA;
+  --grad-a:    linear-gradient(135deg, #FF6B6B 0%, #FF9A5C 100%);
+  --grad-b:    linear-gradient(135deg, #4ECDC4 0%, #A78BFA 100%);
+  --grad-hero: linear-gradient(160deg, #1E1B2E 0%, #16141F 60%, #1A1422 100%);
+  --r:         18px;
+  --r-sm:      12px;
+  --shadow:    0 4px 24px rgba(0,0,0,0.35);
+  --shadow-lg: 0 12px 48px rgba(0,0,0,0.5);
+  --glow:      0 0 40px rgba(255,107,107,0.18);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; }
+
+body {
+  background: var(--bg);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(167,139,250,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 80%, rgba(255,107,107,0.08) 0%, transparent 50%);
+  color: var(--text);
+  font-family: 'Manrope', sans-serif;
+  display: flex;
+  flex-direction: column;
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+/* ── HEADER ── */
+header {
+  padding: 20px 20px 0;
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: rgba(15,14,23,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 10px;
+}
+
+.logo-mark {
+  width: 36px; height: 36px;
+  background: var(--grad-a);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  box-shadow: var(--glow);
+  flex-shrink: 0;
+}
+
+.logo-text {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.5px;
+}
+.logo-text span { color: var(--accent); }
+
+.header-pill {
+  margin-left: auto;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--violet);
+  letter-spacing: 0.3px;
+}
+
+/* tabs */
+.tabs {
+  display: flex;
+  gap: 2px;
+  background: var(--surface);
+  border-radius: var(--r-sm) var(--r-sm) 0 0;
+  padding: 5px;
+}
+.tab {
+  flex: 1;
+  padding: 9px 0;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.2px;
+}
+.tab.active {
+  background: var(--surface3);
+  color: var(--text);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* ── SCROLL AREA ── */
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 16px 60px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.page-content::-webkit-scrollbar { display: none; }
+.page { display: none; animation: fadeUp 0.25s ease; }
+.page.show { display: block; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── HERO CARD ── */
+.hero-card {
+  background: var(--grad-a);
+  border-radius: var(--r);
+  padding: 22px 22px 20px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg), var(--glow);
+}
+.hero-card::before {
+  content: '';
+  position: absolute;
+  right: -30px; top: -30px;
+  width: 130px; height: 130px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 50%;
+}
+.hero-card::after {
+  content: '';
+  position: absolute;
+  right: 30px; bottom: -40px;
+  width: 90px; height: 90px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 50%;
+}
+.hero-label { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.7); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 8px; }
+.hero-row { display: flex; align-items: center; gap: 14px; position: relative; z-index: 1; }
+.hero-count-wrap { flex: 1; }
+.hero-count {
+  font-family: 'Syne', sans-serif;
+  font-size: 52px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+.hero-unit { font-size: 16px; font-weight: 500; color: rgba(255,255,255,0.75); margin-top: 2px; }
+.hero-hint { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+
+.stepper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.stepper button {
+  width: 44px; height: 44px;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+  font-weight: 300;
+  backdrop-filter: blur(8px);
+}
+.stepper button:active { background: rgba(255,255,255,0.28); transform: scale(0.94); }
+
+/* hidden real input */
+.stepper-input {
+  position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0;
+}
+
+/* ── SECTION LABEL ── */
+.sec-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 22px 0 10px 2px;
+}
+
+/* ── INGREDIENT CARDS ── */
+.ing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.ing-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: border-color 0.2s, transform 0.15s;
+  box-shadow: var(--shadow);
+}
+.ing-card:active { transform: scale(0.97); }
+.ing-card-top { display: flex; align-items: center; gap: 8px; }
+.ing-icon {
+  width: 32px; height: 32px;
+  background: var(--surface2);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.ing-name { font-size: 12px; color: var(--muted2); font-weight: 500; }
+.ing-amount {
+  font-family: 'Syne', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+.ing-unit { font-size: 12px; color: var(--muted); margin-left: 1px; }
+
+/* ── HYDRATION ── */
+.hyd-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+.hyd-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+.hyd-label { font-size: 12px; color: var(--muted); font-weight: 500; }
+.hyd-pct {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px; font-weight: 700;
+  background: var(--grad-b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hyd-track {
+  height: 5px;
+  background: var(--surface2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.hyd-fill {
+  height: 100%;
+  background: var(--grad-b);
+  border-radius: 3px;
+  transition: width 0.4s cubic-bezier(.4,0,.2,1);
+}
+
+/* ── SCHEDULE ── */
+.sched-ctrl-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+.sched-ctrl-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.sched-ctrl-row { display: flex; align-items: center; gap: 10px; }
+.time-input {
+  flex: 1;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: var(--r-sm);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  padding: 10px 14px;
+  outline: none;
+  letter-spacing: 1px;
+  transition: border-color 0.2s;
+  min-width: 0;
+}
+.time-input:focus { border-color: var(--accent); }
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.5) sepia(1) saturate(2) hue-rotate(330deg);
+  cursor: pointer; opacity: 0.7;
+}
+.btn-reset {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--muted2);
+  font-size: 13px;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 600;
+  padding: 10px 14px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-reset:active { background: var(--surface3); color: var(--text); }
+
+/* ── SUMMARY CHIPS ── */
+.sum-scroll {
+  display: flex; gap: 8px;
+  overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px;
+  -webkit-overflow-scrolling: touch; scrollbar-width: none;
+}
+.sum-scroll::-webkit-scrollbar { display: none; }
+.sum-chip {
+  flex: 0 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 12px;
+  min-width: 80px;
+  text-align: center;
+  transition: all 0.2s;
+  box-shadow: var(--shadow);
+}
+.sum-chip.is-done {
+  background: var(--green-dim);
+  border-color: rgba(78,205,196,0.3);
+  opacity: 0.6;
+}
+.sum-chip.is-active {
+  background: rgba(255,107,107,0.12);
+  border-color: rgba(255,107,107,0.4);
+  box-shadow: 0 0 16px rgba(255,107,107,0.15);
+}
+.sum-time {
+  font-family: 'Syne', sans-serif;
+  font-size: 12px; font-weight: 700;
+  color: var(--muted2);
+}
+.sum-chip.is-done .sum-time { color: var(--green); }
+.sum-chip.is-active .sum-time { color: var(--accent); }
+.sum-name { font-size: 10px; color: var(--muted); margin-top: 3px; line-height: 1.3; }
+
+/* ── PROGRESS ── */
+.prog-wrap { margin-bottom: 16px; }
+.prog-info { display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; color: var(--muted); margin-bottom: 6px; letter-spacing: 0.3px; }
+.prog-track { height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+.prog-fill { height: 100%; background: var(--grad-a); border-radius: 2px; transition: width 0.5s cubic-bezier(.4,0,.2,1); }
+
+/* ── DAY DIVIDER ── */
+.day-div {
+  display: flex; align-items: center; gap: 10px;
+  margin: 20px 0 12px;
+  font-size: 11px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--violet);
+}
+.day-div::before, .day-div::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(167,139,250,0.25), transparent);
+}
+
+/* ── STEP CARDS ── */
+.step-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  margin-bottom: 10px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: border-color 0.25s, box-shadow 0.25s;
+  position: relative;
+}
+.step-card.is-active {
+  border-color: rgba(255,107,107,0.35);
+  box-shadow: var(--shadow), 0 0 24px rgba(255,107,107,0.12);
+}
+.step-card.is-active.oven-active {
+  border-color: rgba(255,154,92,0.5);
+  box-shadow: var(--shadow), 0 0 32px rgba(255,154,92,0.2);
+}
+.step-card.is-active.oven-active .step-bar { background: var(--accent2); }
+.step-card.is-active.oven-active .step-time { color: var(--accent2); }
+.step-card.is-active.oven-active .step-cd {
+  background: linear-gradient(135deg, #FF9A5C 0%, #FFD166 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.step-card.is-done { opacity: 0.45; }
+
+/* left accent bar */
+.step-bar {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--border2);
+  transition: background 0.25s;
+}
+.step-card.is-done .step-bar { background: var(--green); }
+.step-card.is-active .step-bar { background: var(--accent); }
+
+.step-inner { padding: 15px 14px 14px 18px; }
+
+.step-top { display: flex; align-items: flex-start; gap: 12px; }
+
+.step-time-col { min-width: 68px; flex-shrink: 0; }
+.step-time {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px; font-weight: 700;
+  color: var(--muted2);
+  transition: color 0.2s;
+}
+.step-card.is-active .step-time { color: var(--accent); }
+.step-card.is-done .step-time { color: var(--green); }
+.step-dur { font-size: 10px; color: var(--muted); margin-top: 2px; font-weight: 500; }
+
+.step-sep { width: 1px; background: var(--border); align-self: stretch; flex-shrink: 0; }
+
+.step-body { flex: 1; min-width: 0; }
+.step-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px; font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.step-desc { font-size: 12px; color: var(--muted); line-height: 1.55; }
+.step-note {
+  margin-top: 6px; font-size: 11px; font-weight: 600;
+  color: var(--amber);
+  background: rgba(255,209,102,0.08);
+  border: 1px solid rgba(255,209,102,0.18);
+  border-radius: 7px; padding: 5px 9px;
+}
+.step-done-tag { display: none; margin-top: 5px; font-size: 11px; font-weight: 700; color: var(--green); letter-spacing: 0.3px; }
+.step-card.is-done .step-done-tag { display: block; }
+
+/* countdown */
+.step-cd {
+  display: none;
+  font-family: 'Syne', sans-serif;
+  font-size: 34px; font-weight: 800;
+  letter-spacing: 2px;
+  background: var(--grad-a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 10px 0 2px;
+  line-height: 1;
+}
+.step-card.is-active .step-cd { display: block; }
+.step-cd-lbl { display: none; font-size: 10px; color: var(--muted); font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+.step-card.is-active .step-cd-lbl { display: block; }
+
+/* ── STEP FOOTER ── */
+.step-foot {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px 13px 18px;
+  border-top: 1px solid var(--border);
+  background: rgba(0,0,0,0.12);
+}
+.btn-alarm {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 15px;
+  width: 36px; height: 36px;
+  border-radius: 10px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.18s; flex-shrink: 0;
+}
+.btn-alarm.alarm-on { border-color: var(--green); background: var(--green-dim); color: var(--green); }
+.btn-alarm:active { transform: scale(0.88); }
+
+.btn-done {
+  flex: 1;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--muted2);
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px; font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 10px; cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.2px;
+}
+.btn-done:active { transform: scale(0.97); }
+.step-card.is-active .btn-done {
+  background: var(--grad-a);
+  border: none;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(255,107,107,0.35);
+  padding: 9px 14px;
+}
+.step-card.is-done .btn-done {
+  background: var(--green-dim);
+  border-color: rgba(78,205,196,0.3);
+  color: var(--green);
+  pointer-events: none;
+}
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 20px; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  width: calc(100% - 28px); max-width: 398px;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  border-radius: var(--r); padding: 16px 18px;
+  z-index: 100; box-shadow: var(--shadow-lg), var(--glow);
+  opacity: 0; transition: all 0.3s ease; pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: all; }
+.toast-hdr { display: flex; align-items: center; gap: 9px; margin-bottom: 5px; }
+.toast-icon { font-size: 20px; }
+.toast-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--text); flex: 1; }
+.toast-close { background: none; border: none; color: var(--muted); font-size: 16px; cursor: pointer; }
+.toast-msg { font-size: 12px; color: var(--muted2); line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="logo-mark">🍞</div>
+    <div class="logo-text">Xiao<span>-erDough</span></div>
+    <div class="header-pill" id="loaves-badge">1 loaf</div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="showPage('recipe',this)">Recipe</button>
+    <button class="tab" onclick="showPage('schedule',this)">Schedule</button>
+  </div>
+</header>
+
+<div class="page-content">
+
+  <!-- RECIPE -->
+  <div class="page show" id="recipe-page">
+
+    <div class="hero-card">
+      <div class="hero-label">Loaves to bake</div>
+      <div class="hero-row">
+        <div class="hero-count-wrap">
+          <div class="hero-count" id="hero-count">1</div>
+          <div class="hero-unit">loaf</div>
+          <div class="hero-hint">Tap +/− to scale all ingredients</div>
+        </div>
+        <div class="stepper">
+          <button onclick="changeLoaves(1)">+</button>
+          <button onclick="changeLoaves(-1)">−</button>
+        </div>
+      </div>
+      <input type="number" class="stepper-input" id="loaf-count" value="1" min="1" max="20">
+    </div>
+
+    <div class="sec-label">Ingredients</div>
+    <div class="ing-grid" id="ing-grid"></div>
+
+    <div class="sec-label">Hydration</div>
+    <div class="hyd-card">
+      <div class="hyd-row">
+        <span class="hyd-label">Water ÷ total flour</span>
+        <span class="hyd-pct" id="hyd-pct">—</span>
+      </div>
+      <div class="hyd-track"><div class="hyd-fill" id="hyd-fill" style="width:0%"></div></div>
+    </div>
+
+  </div>
+
+  <!-- SCHEDULE -->
+  <div class="page" id="schedule-page">
+
+    <div class="sched-ctrl-card">
+      <div class="sched-ctrl-label">Starter build time</div>
+      <div class="sched-ctrl-row">
+        <input type="time" class="time-input" id="start-time" value="07:00" onchange="buildSchedule()">
+        <button class="btn-reset" onclick="resetAll()">↺ Reset</button>
+      </div>
+    </div>
+
+    <div class="sched-ctrl-card">
+      <div class="sched-ctrl-label">Next morning — oven on time</div>
+      <div class="sched-ctrl-row">
+        <input type="time" class="time-input" id="morning-time" value="06:30" onchange="buildSchedule()">
+      </div>
+    </div>
+
+    <div class="sum-scroll" id="sum-scroll"></div>
+
+    <div class="prog-wrap">
+      <div class="prog-info">
+        <span id="prog-label">0 of 14 steps done</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    </div>
+
+    <div id="steps-list"></div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <div class="toast-hdr">
+    <span class="toast-icon">⏰</span>
+    <span class="toast-title" id="toast-title"></span>
+    <button class="toast-close" onclick="closeToast()">✕</button>
+  </div>
+  <div class="toast-msg" id="toast-msg"></div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const BASE = [
+  { name:'Bread flour', base:300, unit:'g', icon:'🌾' },
+  { name:'Whole wheat', base:150, unit:'g', icon:'🌿' },
+  { name:'Water',       base:350, unit:'g', icon:'💧' },
+  { name:'Salt',        base:9,   unit:'g', icon:'🧂' },
+  { name:'Starter',     base:90,  unit:'g', icon:'🫙' },
+];
+
+const STEPS = [
+  { name:'Build Starter',                 dur:180, desc:'Mix starter, ferment until active and bubbly — roughly 3 hours.', note:'' },
+  { name:'Autolyse flour & water',        dur:180, desc:'Mix all flour with water. Cover and rest until no dry flour remains.', note:'Per loaf: 300g bread flour · 150g whole wheat · 350g water' },
+  { name:'Add starter & salt',           dur:60,  desc:'Fold in starter and salt thoroughly into the autolysed dough.', note:'Per loaf: 90g starter · 9g salt' },
+  { name:'Stretch & Fold 1',            dur:35,  desc:'Perform stretch and fold sequence. Cover and rest.', note:'' },
+  { name:'Stretch & Fold 2',            dur:20,  desc:'Second stretch and fold. Cover and rest.', note:'' },
+  { name:'Trifold',                      dur:60,  desc:'Perform trifold shaping technique.', note:'' },
+  { name:'Coil Fold 1',                  dur:45,  desc:'Split if 2+ loaves. First coil fold. Cover and rest.', note:'' },
+  { name:'Coil Fold 2',                  dur:40,  desc:'Second coil fold. Cover and rest.', note:'' },
+  { name:'Shape → Basket → Fridge',      dur:60,  desc:'Trifold, jellyroll, place in proofing basket. Refrigerate overnight.', note:'' },
+  { name:'Preheat oven + dutch pots',    dur:30,  desc:'Turn on oven to 250°C with dutch pots inside. 30–40 mins.', note:'', nextDay:true, ovenStep:true },
+  { name:'Score & load loaves',          dur:7,   desc:'Score, place into hot lined dutch pots, add ice cubes.', note:'' },
+  { name:'Check cut lines',              dur:17,  desc:'Check how the scores have opened up.', note:'' },
+  { name:'Final bake — larger loaf',     dur:13,  desc:'Remove lid, bake 9 more mins at 240°C.', note:'' },
+  { name:'Final bake — smaller loaf',    dur:0,   desc:'Remove lid, bake 9 more mins at 240°C.', note:'' },
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let loaves      = 1;
+let stepDone    = new Array(STEPS.length).fill(false);
+let alarmOn     = new Array(STEPS.length).fill(false);
+let alarmTimers = {};
+let countdownIv = null;
+let cdTarget    = null;
+let activeStep  = -1;
+let actualStart = new Array(STEPS.length).fill(null);
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function fmtTime(ms) {
+  const d = new Date(ms);
+  let h = d.getHours(), m = d.getMinutes();
+  const ap = h < 12 ? 'AM' : 'PM';
+  h = h % 12 || 12;
+  return `${h}:${String(m).padStart(2,'0')} ${ap}`;
+}
+function fmtDur(mins) {
+  if (!mins) return '—';
+  if (mins < 60) return `${mins}m`;
+  const h = Math.floor(mins/60), m = mins%60;
+  return m ? `${h}h ${m}m` : `${h}h`;
+}
+function minMs(m) { return m * 60000; }
+function inputMs() {
+  const [h,m] = document.getElementById('start-time').value.split(':').map(Number);
+  const d = new Date(); d.setHours(h,m,0,0);
+  return d.getTime();
+}
+
+// ── RECIPE ────────────────────────────────────────────────────────────────────
+function changeLoaves(d) {
+  loaves = Math.max(1, Math.min(20, loaves + d));
+  document.getElementById('loaf-count').value = loaves;
+  updateRecipe();
+}
+function updateRecipe() {
+  loaves = Math.max(1, parseInt(document.getElementById('loaf-count').value) || 1);
+  document.getElementById('loaf-count').value = loaves;
+  document.getElementById('hero-count').textContent = loaves;
+  document.getElementById('loaves-badge').textContent = loaves === 1 ? '1 loaf' : `${loaves} loaves`;
+
+  document.getElementById('ing-grid').innerHTML = BASE.map(ing =>
+    `<div class="ing-card">
+      <div class="ing-card-top">
+        <div class="ing-icon">${ing.icon}</div>
+        <div class="ing-name">${ing.name}</div>
+      </div>
+      <div>
+        <span class="ing-amount">${ing.base * loaves}</span>
+        <span class="ing-unit">${ing.unit}</span>
+      </div>
+    </div>`
+  ).join('');
+
+  const flour = (BASE[0].base + BASE[1].base) * loaves;
+  const water = BASE[2].base * loaves;
+  const hyd = Math.round(water / flour * 100);
+  document.getElementById('hyd-pct').textContent = hyd + '%';
+  document.getElementById('hyd-fill').style.width = Math.min(hyd,100) + '%';
+}
+
+// ── SCHEDULE ─────────────────────────────────────────────────────────────────
+function nextDayAt630() {
+  const el = document.getElementById('morning-time');
+  const [h, m] = el ? el.value.split(':').map(Number) : [6, 30];
+  const d = new Date();
+  d.setDate(d.getDate() + 1);
+  d.setHours(h, m, 0, 0);
+  return d.getTime();
+}
+
+function buildSchedule() {
+  const start = inputMs();
+  actualStart[0] = start;
+  for (let i = 1; i < STEPS.length; i++) {
+    if (!stepDone[i]) {
+      if (STEPS[i].nextDay) {
+        actualStart[i] = nextDayAt630();
+      } else {
+        actualStart[i] = actualStart[i-1] + minMs(STEPS[i-1].dur);
+      }
+    }
+  }
+  renderSchedule();
+}
+
+function renderSchedule() { renderSummary(); renderSteps(); }
+
+function renderSummary() {
+  document.getElementById('sum-scroll').innerHTML = STEPS.map((s,i) => {
+    const cls = stepDone[i] ? 'is-done' : i === activeStep ? 'is-active' : '';
+    return `<div class="sum-chip ${cls}">
+      <div class="sum-time">${fmtTime(actualStart[i])}</div>
+      <div class="sum-name">${s.name}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderSteps() {
+  const done = stepDone.filter(Boolean).length;
+  const pct  = Math.round(done / STEPS.length * 100);
+  document.getElementById('prog-label').textContent = `${done} of ${STEPS.length} steps done`;
+  document.getElementById('prog-pct').textContent   = pct + '%';
+  document.getElementById('prog-fill').style.width  = pct + '%';
+
+  let html = '';
+  for (let i = 0; i < STEPS.length; i++) {
+    const s = STEPS[i];
+    if (s.nextDay) html += `<div class="day-div">☀️ Next morning</div>`;
+    const isDone = stepDone[i], isActive = i === activeStep;
+    const cls = isDone ? 'is-done' : isActive ? 'is-active' : '';
+    const noteHtml = s.note
+      ? `<div class="step-note">×${loaves}: ${scaleNote(s.note)}</div>` : '';
+
+    const isOven = !!s.ovenStep;
+    const ovenCls = isOven && isActive ? 'oven-active' : '';
+    const activeDoneLabel = isOven && isActive ? '🔥 Oven turned on — heating up' : isActive ? '✓ Done — start next timer' : 'Mark done';
+    const cdLabel = isOven ? 'oven ready in' : 'time remaining';
+
+    html += `<div class="step-card ${cls} ${ovenCls}" id="step-${i}">
+      <div class="step-bar"></div>
+      <div class="step-inner">
+        <div class="step-top">
+          <div class="step-time-col">
+            <div class="step-time">${fmtTime(actualStart[i])}</div>
+            <div class="step-dur">${fmtDur(s.dur)}</div>
+          </div>
+          <div class="step-sep"></div>
+          <div class="step-body">
+            <div class="step-name">${s.name}</div>
+            <div class="step-desc">${s.desc}</div>
+            ${noteHtml}
+            <div class="step-done-tag">✓ Completed</div>
+            <div class="step-cd" id="cd-${i}">—:——</div>
+            <div class="step-cd-lbl">${cdLabel}</div>
+          </div>
+        </div>
+      </div>
+      <div class="step-foot">
+        <button class="btn-alarm ${alarmOn[i] ? 'alarm-on' : ''}" onclick="toggleAlarm(${i})">
+          ${alarmOn[i] ? '🔔' : '🔕'}
+        </button>
+        <button class="btn-done" onclick="markDone(${i})" ${isDone ? 'disabled' : ''}>
+          ${isDone ? '✓ Done' : activeDoneLabel}
+        </button>
+      </div>
+    </div>`;
+  }
+  document.getElementById('steps-list').innerHTML = html;
+  if (activeStep !== -1 && !stepDone[activeStep]) tickCountdown();
+}
+
+function scaleNote(note) {
+  return note.replace(/(\d+)g/g, (_, n) => `${parseInt(n)*loaves}g`);
+}
+
+// ── MARK DONE ─────────────────────────────────────────────────────────────────
+function markDone(i) {
+  const now = Date.now();
+
+  // Auto-mark all prior undone steps as done (skipped)
+  for (let j = 0; j < i; j++) {
+    if (!stepDone[j]) stepDone[j] = true;
+  }
+  stepDone[i] = true;
+
+  let next = -1;
+  for (let j = i+1; j < STEPS.length; j++) { if (!stepDone[j]) { next = j; break; } }
+  if (countdownIv) { clearInterval(countdownIv); countdownIv = null; }
+  if (next !== -1) {
+    // If next step is a next-day step, anchor to morning time; otherwise use real now
+    actualStart[next] = STEPS[next].nextDay ? nextDayAt630() : now;
+    for (let j = next+1; j < STEPS.length; j++) {
+      if (!stepDone[j]) {
+        actualStart[j] = STEPS[j].nextDay ? nextDayAt630() : actualStart[j-1] + minMs(STEPS[j-1].dur);
+      }
+    }
+    activeStep = next;
+    cdTarget = actualStart[next] + minMs(STEPS[next].dur);
+    countdownIv = setInterval(tickCountdown, 1000);
+    for (let j = next; j < STEPS.length; j++) { if (alarmOn[j]) scheduleAlarm(j); }
+  } else {
+    activeStep = -1; cdTarget = null;
+  }
+  renderSchedule();
+  if (activeStep !== -1) {
+    setTimeout(() => {
+      const el = document.getElementById(`step-${activeStep}`);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 120);
+  }
+}
+
+// ── COUNTDOWN ─────────────────────────────────────────────────────────────────
+function tickCountdown() {
+  if (activeStep === -1 || cdTarget === null) return;
+  const el = document.getElementById(`cd-${activeStep}`);
+  if (!el) return;
+  const rem = Math.max(0, cdTarget - Date.now());
+  const m = String(Math.floor(rem / 60000)).padStart(2,'0');
+  const s = String(Math.floor((rem % 60000) / 1000)).padStart(2,'0');
+  el.textContent = `${m}:${s}`;
+  if (rem === 0) { clearInterval(countdownIv); countdownIv = null; }
+}
+
+// ── ALARMS ────────────────────────────────────────────────────────────────────
+function toggleAlarm(i) {
+  alarmOn[i] = !alarmOn[i];
+  if (alarmOn[i]) scheduleAlarm(i); else clearTimeout(alarmTimers[i]);
+  renderSchedule();
+}
+function scheduleAlarm(i) {
+  clearTimeout(alarmTimers[i]);
+  const ms = actualStart[i] - Date.now();
+  if (ms <= 0) return;
+  alarmTimers[i] = setTimeout(() => fireAlarm(i), ms);
+  // Also schedule via Service Worker for background delivery
+  if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+    navigator.serviceWorker.controller.postMessage({
+      type: 'SCHEDULE_ALARM',
+      idx: i,
+      name: STEPS[i].name,
+      desc: STEPS[i].desc,
+      fireAt: actualStart[i]
+    });
+  }
+}
+function cancelSwAlarm(i) {
+  if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+    navigator.serviceWorker.controller.postMessage({ type: 'CANCEL_ALARM', idx: i });
+  }
+}
+function fireAlarm(i) {
+  if ('Notification' in window && Notification.permission === 'granted') {
+    new Notification('🍞 Xiao-erDough', { body: `Time for: ${STEPS[i].name}`, icon: '' });
+  }
+  document.getElementById('toast-title').textContent = STEPS[i].name;
+  document.getElementById('toast-msg').textContent   = STEPS[i].desc;
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 10000);
+}
+function closeToast() { document.getElementById('toast').classList.remove('show'); }
+
+// Request notification permission and register SW
+async function initNotifications() {
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'default') await Notification.requestPermission();
+  if (!('serviceWorker' in navigator)) return;
+  try {
+    // Inline SW as a blob so it works from file:// or any origin
+    const swCode = `
+self.alarms = {};
+self.addEventListener('message', e => {
+  const d = e.data;
+  if (d.type === 'SCHEDULE_ALARM') {
+    clearTimeout(self.alarms[d.idx]);
+    const delay = d.fireAt - Date.now();
+    if (delay <= 0) return;
+    self.alarms[d.idx] = setTimeout(() => {
+      self.registration.showNotification('🍞 Xiao-erDough', {
+        body: 'Time for: ' + d.name + '\\n' + d.desc,
+        icon: '',
+        badge: '',
+        tag: 'bread-' + d.idx,
+        renotify: true,
+        requireInteraction: true
+      });
+    }, delay);
+  }
+  if (d.type === 'CANCEL_ALARM') {
+    clearTimeout(self.alarms[d.idx]);
+    delete self.alarms[d.idx];
+  }
+});
+`;
+    const blob = new Blob([swCode], { type: 'application/javascript' });
+    const swUrl = URL.createObjectURL(blob);
+    const reg = await navigator.serviceWorker.register(swUrl, { scope: '/' });
+    await navigator.serviceWorker.ready;
+    console.log('SW registered for background alarms');
+  } catch(e) {
+    console.log('SW not available, falling back to in-page alarms only:', e.message);
+  }
+}
+initNotifications();
+
+// ── RESET ─────────────────────────────────────────────────────────────────────
+function resetAll() {
+  stepDone = new Array(STEPS.length).fill(false);
+  alarmOn  = new Array(STEPS.length).fill(false);
+  activeStep = -1; cdTarget = null;
+  if (countdownIv) { clearInterval(countdownIv); countdownIv = null; }
+  Object.values(alarmTimers).forEach(t => clearTimeout(t)); alarmTimers = {};
+  actualStart = new Array(STEPS.length).fill(null);
+  buildSchedule();
+}
+
+// ── NAV ───────────────────────────────────────────────────────────────────────
+function showPage(page, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('show'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(page+'-page').classList.add('show');
+  btn.classList.add('active');
+  if (page === 'schedule') buildSchedule();
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+updateRecipe();
+buildSchedule();
+</script>
+</body>
+</html>
