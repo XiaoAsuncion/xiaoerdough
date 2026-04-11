@@ -542,6 +542,134 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 .toast-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--text); flex: 1; }
 .toast-close { background: none; border: none; color: var(--muted); font-size: 16px; cursor: pointer; }
 .toast-msg { font-size: 12px; color: var(--muted2); line-height: 1.5; }
+
+/* ── STARTER PAGE ── */
+.starter-hero {
+  background: var(--grad-b);
+  border-radius: var(--r);
+  padding: 22px 22px 20px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg), 0 0 40px rgba(78,205,196,0.15);
+}
+.starter-hero::before {
+  content: '';
+  position: absolute; right: -30px; top: -30px;
+  width: 130px; height: 130px;
+  background: rgba(255,255,255,0.08); border-radius: 50%;
+}
+.starter-hero::after {
+  content: '';
+  position: absolute; right: 30px; bottom: -40px;
+  width: 90px; height: 90px;
+  background: rgba(255,255,255,0.06); border-radius: 50%;
+}
+.starter-hero-label { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.65); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+.starter-hero-title { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 4px; position: relative; z-index: 1; }
+.starter-hero-sub { font-size: 12px; color: rgba(255,255,255,0.7); position: relative; z-index: 1; line-height: 1.5; }
+
+.starter-phase {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  margin-bottom: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.starter-phase-hdr {
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.starter-phase-icon {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.phase-night .starter-phase-icon { background: rgba(167,139,250,0.15); }
+.phase-day   .starter-phase-icon { background: rgba(78,205,196,0.15); }
+.starter-phase-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--text); }
+.starter-phase-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.starter-phase-ratio {
+  margin-left: auto;
+  font-family: 'Syne', sans-serif;
+  font-size: 13px; font-weight: 700;
+  padding: 4px 10px; border-radius: 20px;
+  flex-shrink: 0;
+}
+.phase-night .starter-phase-ratio { background: rgba(167,139,250,0.15); color: var(--violet); }
+.phase-day   .starter-phase-ratio { background: rgba(78,205,196,0.15); color: var(--green); }
+
+.starter-rows { padding: 12px 16px 14px; display: flex; flex-direction: column; gap: 10px; }
+.starter-row {
+  display: flex; align-items: center; gap: 10px;
+}
+.starter-row-icon {
+  width: 30px; height: 30px;
+  background: var(--surface2); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+.starter-row-name { flex: 1; font-size: 13px; color: var(--muted2); font-weight: 500; }
+.starter-row-amt {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px; font-weight: 700; color: var(--text);
+}
+.starter-row-unit { font-size: 11px; color: var(--muted); margin-left: 2px; }
+
+.starter-divider {
+  height: 1px; background: var(--border); margin: 0 16px;
+}
+.starter-total-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px 14px;
+}
+.starter-total-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; }
+.starter-total-amt {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px; font-weight: 800;
+  background: var(--grad-b);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+.starter-save-card {
+  background: rgba(255,209,102,0.07);
+  border: 1px solid rgba(255,209,102,0.2);
+  border-radius: var(--r-sm);
+  padding: 13px 15px;
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 16px;
+}
+.starter-save-icon { font-size: 20px; }
+.starter-save-text { flex: 1; font-size: 12px; color: var(--amber); line-height: 1.5; font-weight: 500; }
+.starter-save-amt { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: var(--amber); }
+
+.starter-timeline {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+.starter-timeline-title { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+.tl-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+.tl-row:last-child { margin-bottom: 0; }
+.tl-dot-col { display: flex; flex-direction: column; align-items: center; gap: 0; }
+.tl-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+.tl-line { width: 2px; flex: 1; min-height: 20px; margin-top: 3px; }
+.tl-row:last-child .tl-line { display: none; }
+.tl-night .tl-dot { background: var(--violet); }
+.tl-night .tl-line { background: linear-gradient(var(--violet), var(--green)); }
+.tl-day .tl-dot { background: var(--green); }
+.tl-bake .tl-dot { background: var(--accent); }
+.tl-bake .tl-line { background: var(--accent); }
+.tl-body {}
+.tl-time { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--muted2); }
+.tl-desc { font-size: 11px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+
 </style>
 </head>
 <body>
@@ -554,6 +682,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   </div>
   <div class="tabs">
     <button class="tab active" onclick="showPage('recipe',this)">Recipe</button>
+    <button class="tab" onclick="showPage('starter',this)">Starter</button>
     <button class="tab" onclick="showPage('schedule',this)">Schedule</button>
   </div>
 </header>
@@ -624,6 +753,119 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     <div id="steps-list"></div>
 
   </div>
+
+  <!-- STARTER PAGE -->
+  <div class="page" id="starter-page">
+
+    <div class="starter-hero">
+      <div class="starter-hero-label">Starter Prep</div>
+      <div class="starter-hero-title" id="st-hero-title">Starter for 1 loaf</div>
+      <div class="starter-hero-sub">Two-day feeding plan · saves 50g for next bake</div>
+    </div>
+
+    <!-- Save reminder -->
+    <div class="starter-save-card">
+      <span class="starter-save-icon">🫙</span>
+      <span class="starter-save-text">Reserve this much starter before the day-of feed — this is your next bake's seed</span>
+      <span class="starter-save-amt" id="st-save-amt">50g</span>
+    </div>
+
+    <!-- Timeline -->
+    <div class="starter-timeline">
+      <div class="starter-timeline-title">Timeline</div>
+      <div class="tl-row tl-night">
+        <div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-body">
+          <div class="tl-time">Night before (e.g. 9 PM)</div>
+          <div class="tl-desc">Feed starter 1:2:2 — leave at room temp overnight (~8–10 hrs)</div>
+        </div>
+      </div>
+      <div class="tl-row tl-day">
+        <div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-body">
+          <div class="tl-time">Bake morning (e.g. 7 AM)</div>
+          <div class="tl-desc">Feed again 1:1:1 — ready to use when peaked &amp; bubbly (~3 hrs)</div>
+        </div>
+      </div>
+      <div class="tl-row tl-bake">
+        <div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-body">
+          <div class="tl-time">~10 AM — Autolyse begins</div>
+          <div class="tl-desc">Use <span id="st-use-amt">90g</span> of active starter in the dough</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Night before phase -->
+    <div class="starter-phase phase-night">
+      <div class="starter-phase-hdr">
+        <div class="starter-phase-icon">🌙</div>
+        <div>
+          <div class="starter-phase-title">Night Before Feed</div>
+          <div class="starter-phase-sub">Build volume overnight</div>
+        </div>
+        <div class="starter-phase-ratio">1 : 2 : 2</div>
+      </div>
+      <div class="starter-rows">
+        <div class="starter-row">
+          <div class="starter-row-icon">🫙</div>
+          <div class="starter-row-name">Existing starter (seed)</div>
+          <div><span class="starter-row-amt" id="nb-starter">—</span><span class="starter-row-unit">g</span></div>
+        </div>
+        <div class="starter-row">
+          <div class="starter-row-icon">🌾</div>
+          <div class="starter-row-name">Flour</div>
+          <div><span class="starter-row-amt" id="nb-flour">—</span><span class="starter-row-unit">g</span></div>
+        </div>
+        <div class="starter-row">
+          <div class="starter-row-icon">💧</div>
+          <div class="starter-row-name">Water</div>
+          <div><span class="starter-row-amt" id="nb-water">—</span><span class="starter-row-unit">g</span></div>
+        </div>
+      </div>
+      <div class="starter-divider"></div>
+      <div class="starter-total-row">
+        <div class="starter-total-label">Total after feed</div>
+        <div><span class="starter-total-amt" id="nb-total">—</span><span class="starter-row-unit" style="margin-left:4px;font-size:12px;color:var(--muted)">g</span></div>
+      </div>
+    </div>
+
+    <!-- Day-of phase -->
+    <div class="starter-phase phase-day">
+      <div class="starter-phase-hdr">
+        <div class="starter-phase-icon">☀️</div>
+        <div>
+          <div class="starter-phase-title">Bake Morning Feed</div>
+          <div class="starter-phase-sub">Final activation before dough</div>
+        </div>
+        <div class="starter-phase-ratio">1 : 1 : 1</div>
+      </div>
+      <div class="starter-rows">
+        <div class="starter-row">
+          <div class="starter-row-icon">🫙</div>
+          <div class="starter-row-name">Starter (from night feed)</div>
+          <div><span class="starter-row-amt" id="dm-starter">—</span><span class="starter-row-unit">g</span></div>
+        </div>
+        <div class="starter-row">
+          <div class="starter-row-icon">🌾</div>
+          <div class="starter-row-name">Flour</div>
+          <div><span class="starter-row-amt" id="dm-flour">—</span><span class="starter-row-unit">g</span></div>
+        </div>
+        <div class="starter-row">
+          <div class="starter-row-icon">💧</div>
+          <div class="starter-row-name">Water</div>
+          <div><span class="starter-row-amt" id="dm-water">—</span><span class="starter-row-unit">g</span></div>
+        </div>
+      </div>
+      <div class="starter-divider"></div>
+      <div class="starter-total-row">
+        <div class="starter-total-label">Total after feed</div>
+        <div><span class="starter-total-amt" id="dm-total">—</span><span class="starter-row-unit" style="margin-left:4px;font-size:12px;color:var(--muted)">g</span></div>
+      </div>
+    </div>
+
+  </div>
+
 </div>
 
 <div class="toast" id="toast">
@@ -723,6 +965,7 @@ function updateRecipe() {
   const hyd = Math.round(water / flour * 100);
   document.getElementById('hyd-pct').textContent = hyd + '%';
   document.getElementById('hyd-fill').style.width = Math.min(hyd,100) + '%';
+  calcStarter();
 }
 
 // ── SCHEDULE ─────────────────────────────────────────────────────────────────
@@ -962,6 +1205,56 @@ function resetAll() {
   buildSchedule();
 }
 
+// ── STARTER CALC ─────────────────────────────────────────────────────────────
+// Goal: produce enough active starter for the bake + 50g saved
+// Day-of feed is 1:1:1  →  starter_in : flour : water  (3 equal parts)
+// Night feed is 1:2:2   →  starter_in : flour : water  (5 parts total)
+//
+// Total needed after day-of feed = (90g × loaves) + 50g saved
+// Each part of day-of feed = total / 3
+// Night feed output must equal day-of starter_in  → night output = total/3
+// Night feed total parts = 5, so night seed = (total/3) / 5, flour = water = seed×2
+
+function calcStarter() {
+  const SAVE       = 50;                        // always keep 50g
+  const perLoaf    = 90;
+  const total      = perLoaf * loaves + SAVE;   // total active starter needed after day-of feed
+
+  // Day-of 1:1:1
+  const dmEach     = Math.ceil(total / 3);      // each of the 3 equal parts
+  const dmStarter  = dmEach;
+  const dmFlour    = dmEach;
+  const dmWater    = dmEach;
+  const dmTotal    = dmEach * 3;
+
+  // Night before 1:2:2 — output must be >= dmStarter
+  // night seed × 5 = dmStarter  →  seed = dmStarter / 5
+  const nbSeed     = Math.ceil(dmStarter / 5);
+  const nbFlour    = nbSeed * 2;
+  const nbWater    = nbSeed * 2;
+  const nbTotal    = nbSeed + nbFlour + nbWater; // = nbSeed × 5
+
+  const useAmt     = perLoaf * loaves;
+
+  // Update hero
+  document.getElementById('st-hero-title').textContent =
+    `Starter for ${loaves} loaf${loaves > 1 ? 's' : ''}`;
+  document.getElementById('st-use-amt').textContent = useAmt + 'g';
+  document.getElementById('st-save-amt').textContent = SAVE + 'g';
+
+  // Night before
+  document.getElementById('nb-starter').textContent = nbSeed;
+  document.getElementById('nb-flour').textContent   = nbFlour;
+  document.getElementById('nb-water').textContent   = nbWater;
+  document.getElementById('nb-total').textContent   = nbTotal;
+
+  // Day of
+  document.getElementById('dm-starter').textContent = dmStarter;
+  document.getElementById('dm-flour').textContent   = dmFlour;
+  document.getElementById('dm-water').textContent   = dmWater;
+  document.getElementById('dm-total').textContent   = dmTotal;
+}
+
 // ── NAV ───────────────────────────────────────────────────────────────────────
 function showPage(page, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('show'));
@@ -969,11 +1262,13 @@ function showPage(page, btn) {
   document.getElementById(page+'-page').classList.add('show');
   btn.classList.add('active');
   if (page === 'schedule') buildSchedule();
+  if (page === 'starter')  calcStarter();
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 updateRecipe();
 buildSchedule();
+calcStarter();
 </script>
 </body>
 </html>
