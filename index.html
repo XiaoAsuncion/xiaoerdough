@@ -543,7 +543,132 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 .toast-close { background: none; border: none; color: var(--muted); font-size: 16px; cursor: pointer; }
 .toast-msg { font-size: 12px; color: var(--muted2); line-height: 1.5; }
 
-/* ── STARTER PAGE ── */
+/* ── SCHEDULE TABLE ── */
+.sched-table-wrap {
+  border-radius: var(--r);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.sched-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  font-size: 13px;
+}
+.sched-table thead tr {
+  background: var(--surface2);
+}
+.sched-table th {
+  padding: 10px 12px;
+  text-align: left;
+  font-family: 'Syne', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.sched-table td {
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.sched-table tr:last-child td { border-bottom: none; }
+
+/* row states */
+.sched-table tr.row-done td { opacity: 0.4; }
+.sched-table tr.row-done td .row-step-name { text-decoration: line-through; }
+.sched-table tr.row-active { background: rgba(255,107,107,0.06); }
+.sched-table tr.row-active td:first-child { border-left: 3px solid var(--accent); }
+.sched-table tr.row-nextday { background: rgba(167,139,250,0.05); }
+.sched-table tr.row-nextday td:first-child { border-left: 3px solid var(--violet); }
+
+/* time cell — editable */
+.row-time-cell { position: relative; }
+.row-time-display {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted2);
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 3px 6px;
+  margin: -3px -6px;
+  transition: background 0.15s;
+  white-space: nowrap;
+  display: inline-block;
+}
+.row-time-display:hover { background: var(--surface3); color: var(--text); }
+tr.row-active .row-time-display { color: var(--accent); }
+tr.row-done   .row-time-display { color: var(--green); }
+
+.row-time-input {
+  display: none;
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--surface3);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  padding: 3px 6px;
+  outline: none;
+  width: 100px;
+}
+.row-time-input.visible { display: inline-block; }
+
+.row-dur {
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.row-step-name {
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.row-step-desc {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.row-step-note {
+  font-size: 10px;
+  color: var(--amber);
+  margin-top: 3px;
+}
+.row-nextday-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--violet);
+  background: rgba(167,139,250,0.12);
+  border-radius: 4px;
+  padding: 1px 5px;
+  margin-bottom: 3px;
+}
+
+/* done checkbox */
+.done-check {
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  border: 1.5px solid var(--border2);
+  background: transparent;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  transition: all 0.18s;
+  flex-shrink: 0;
+  color: transparent;
+}
+.done-check:hover { border-color: var(--accent); }
+.done-check.checked { background: var(--green); border-color: var(--green); color: #fff; }
+
 .starter-hero {
   background: var(--grad-b);
   border-radius: var(--r);
@@ -726,31 +851,32 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   <div class="page" id="schedule-page">
 
     <div class="sched-ctrl-card">
-      <div class="sched-ctrl-label">Starter build time</div>
-      <div class="sched-ctrl-row">
-        <input type="time" class="time-input" id="start-time" value="07:00" onchange="buildSchedule()">
-        <button class="btn-reset" onclick="resetAll()">↺ Reset</button>
+      <div class="sched-ctrl-row" style="gap:16px; flex-wrap:wrap;">
+        <div style="flex:1; min-width:120px;">
+          <div class="sched-ctrl-label">Start time</div>
+          <input type="time" class="time-input" id="start-time" value="07:00" onchange="buildSchedule()">
+        </div>
+        <div style="flex:1; min-width:120px;">
+          <div class="sched-ctrl-label">Morning oven on</div>
+          <input type="time" class="time-input" id="morning-time" value="06:30" onchange="buildSchedule()">
+        </div>
+        <button class="btn-reset" onclick="resetAll()" style="align-self:flex-end;">↺ Reset</button>
       </div>
     </div>
 
-    <div class="sched-ctrl-card">
-      <div class="sched-ctrl-label">Next morning — oven on time</div>
-      <div class="sched-ctrl-row">
-        <input type="time" class="time-input" id="morning-time" value="06:30" onchange="buildSchedule()">
-      </div>
+    <div class="sched-table-wrap">
+      <table class="sched-table" id="sched-table">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Duration</th>
+            <th>Step</th>
+            <th>Done</th>
+          </tr>
+        </thead>
+        <tbody id="sched-tbody"></tbody>
+      </table>
     </div>
-
-    <div class="sum-scroll" id="sum-scroll"></div>
-
-    <div class="prog-wrap">
-      <div class="prog-info">
-        <span id="prog-label">0 of 14 steps done</span>
-        <span id="prog-pct">0%</span>
-      </div>
-      <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
-    </div>
-
-    <div id="steps-list"></div>
 
   </div>
 
@@ -983,80 +1109,96 @@ function buildSchedule() {
   actualStart[0] = start;
   for (let i = 1; i < STEPS.length; i++) {
     if (!stepDone[i]) {
-      if (STEPS[i].nextDay) {
-        actualStart[i] = nextDayAt630();
-      } else {
-        actualStart[i] = actualStart[i-1] + minMs(STEPS[i-1].dur);
-      }
+      actualStart[i] = STEPS[i].nextDay
+        ? nextDayAt630()
+        : actualStart[i-1] + minMs(STEPS[i-1].dur);
     }
   }
   renderSchedule();
 }
 
-function renderSchedule() { renderSummary(); renderSteps(); }
+function renderSchedule() {
+  const tbody = document.getElementById('sched-tbody');
+  if (!tbody) return;
 
-function renderSummary() {
-  document.getElementById('sum-scroll').innerHTML = STEPS.map((s,i) => {
-    const cls = stepDone[i] ? 'is-done' : i === activeStep ? 'is-active' : '';
-    return `<div class="sum-chip ${cls}">
-      <div class="sum-time">${fmtTime(actualStart[i])}</div>
-      <div class="sum-name">${s.name}</div>
-    </div>`;
-  }).join('');
-}
-
-function renderSteps() {
-  const done = stepDone.filter(Boolean).length;
-  const pct  = Math.round(done / STEPS.length * 100);
-  document.getElementById('prog-label').textContent = `${done} of ${STEPS.length} steps done`;
-  document.getElementById('prog-pct').textContent   = pct + '%';
-  document.getElementById('prog-fill').style.width  = pct + '%';
-
-  let html = '';
+  let rows = '';
   for (let i = 0; i < STEPS.length; i++) {
     const s = STEPS[i];
-    if (s.nextDay) html += `<div class="day-div">☀️ Next morning</div>`;
-    const isDone = stepDone[i], isActive = i === activeStep;
-    const cls = isDone ? 'is-done' : isActive ? 'is-active' : '';
+    const isDone   = stepDone[i];
+    const isActive = i === activeStep;
+    let rowCls = isDone ? 'row-done' : isActive ? 'row-active' : '';
+    if (s.nextDay && !isDone) rowCls += ' row-nextday';
+
     const noteHtml = s.note
-      ? `<div class="step-note">×${loaves}: ${scaleNote(s.note)}</div>` : '';
+      ? `<div class="row-step-note">×${loaves}: ${scaleNote(s.note)}</div>` : '';
+    const nextDayBadge = s.nextDay
+      ? `<div class="row-nextday-badge">☀️ Next morning</div>` : '';
+    const durLabel = s.dur ? fmtDur(s.dur) : '—';
 
-    const isOven = !!s.ovenStep;
-    const ovenCls = isOven && isActive ? 'oven-active' : '';
-    const activeDoneLabel = isOven && isActive ? '🔥 Oven turned on — heating up' : isActive ? '✓ Done — start next timer' : 'Mark done';
-    const cdLabel = isOven ? 'oven ready in' : 'time remaining';
-
-    html += `<div class="step-card ${cls} ${ovenCls}" id="step-${i}">
-      <div class="step-bar"></div>
-      <div class="step-inner">
-        <div class="step-top">
-          <div class="step-time-col">
-            <div class="step-time">${fmtTime(actualStart[i])}</div>
-            <div class="step-dur">${fmtDur(s.dur)}</div>
-          </div>
-          <div class="step-sep"></div>
-          <div class="step-body">
-            <div class="step-name">${s.name}</div>
-            <div class="step-desc">${s.desc}</div>
-            ${noteHtml}
-            <div class="step-done-tag">✓ Completed</div>
-            <div class="step-cd" id="cd-${i}">—:——</div>
-            <div class="step-cd-lbl">${cdLabel}</div>
-          </div>
-        </div>
-      </div>
-      <div class="step-foot">
-        <button class="btn-alarm ${alarmOn[i] ? 'alarm-on' : ''}" onclick="toggleAlarm(${i})">
-          ${alarmOn[i] ? '🔔' : '🔕'}
+    rows += `<tr class="${rowCls}" id="tr-${i}">
+      <td class="row-time-cell">
+        <span class="row-time-display" id="td-disp-${i}" onclick="editTime(${i})">${fmtTime(actualStart[i])}</span>
+        <input type="time" class="row-time-input" id="td-input-${i}"
+          value="${msToHHMM(actualStart[i])}"
+          onchange="applyTimeEdit(${i})"
+          onblur="cancelTimeEdit(${i})">
+      </td>
+      <td class="row-dur">${durLabel}</td>
+      <td>
+        ${nextDayBadge}
+        <div class="row-step-name">${s.name}</div>
+        <div class="row-step-desc">${s.desc}</div>
+        ${noteHtml}
+      </td>
+      <td>
+        <button class="done-check ${isDone ? 'checked' : ''}" onclick="markDone(${i})" ${isDone ? 'disabled' : ''}>
+          ${isDone ? '✓' : ''}
         </button>
-        <button class="btn-done" onclick="markDone(${i})" ${isDone ? 'disabled' : ''}>
-          ${isDone ? '✓ Done' : activeDoneLabel}
-        </button>
-      </div>
-    </div>`;
+      </td>
+    </tr>`;
   }
-  document.getElementById('steps-list').innerHTML = html;
-  if (activeStep !== -1 && !stepDone[activeStep]) tickCountdown();
+  tbody.innerHTML = rows;
+}
+
+// ── TIME EDIT ─────────────────────────────────────────────────────────────────
+function msToHHMM(ms) {
+  const d = new Date(ms);
+  return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+
+function editTime(i) {
+  if (stepDone[i]) return;
+  document.getElementById(`td-disp-${i}`).style.display = 'none';
+  const inp = document.getElementById(`td-input-${i}`);
+  inp.classList.add('visible');
+  inp.focus();
+}
+
+function applyTimeEdit(i) {
+  const inp = document.getElementById(`td-input-${i}`);
+  const [h, m] = inp.value.split(':').map(Number);
+  // Build a new ms timestamp — keep same date as original, just change hh:mm
+  const d = new Date(actualStart[i]);
+  d.setHours(h, m, 0, 0);
+  actualStart[i] = d.getTime();
+
+  // Cascade all subsequent undone steps from this new anchor
+  for (let j = i+1; j < STEPS.length; j++) {
+    if (!stepDone[j]) {
+      actualStart[j] = STEPS[j].nextDay
+        ? nextDayAt630()
+        : actualStart[j-1] + minMs(STEPS[j-1].dur);
+    }
+  }
+  cancelTimeEdit(i);
+  renderSchedule();
+}
+
+function cancelTimeEdit(i) {
+  const disp = document.getElementById(`td-disp-${i}`);
+  const inp  = document.getElementById(`td-input-${i}`);
+  if (disp) disp.style.display = '';
+  if (inp)  inp.classList.remove('visible');
 }
 
 function scaleNote(note) {
@@ -1065,39 +1207,23 @@ function scaleNote(note) {
 
 // ── MARK DONE ─────────────────────────────────────────────────────────────────
 function markDone(i) {
+  // Auto-mark all prior undone steps
+  for (let j = 0; j <= i; j++) stepDone[j] = true;
+
+  // Cascade remaining steps from now
   const now = Date.now();
-
-  // Auto-mark all prior undone steps as done (skipped)
-  for (let j = 0; j < i; j++) {
-    if (!stepDone[j]) stepDone[j] = true;
-  }
-  stepDone[i] = true;
-
-  let next = -1;
-  for (let j = i+1; j < STEPS.length; j++) { if (!stepDone[j]) { next = j; break; } }
-  if (countdownIv) { clearInterval(countdownIv); countdownIv = null; }
+  const next = STEPS.findIndex((_, j) => j > i && !stepDone[j]);
   if (next !== -1) {
-    // If next step is a next-day step, anchor to morning time; otherwise use real now
     actualStart[next] = STEPS[next].nextDay ? nextDayAt630() : now;
     for (let j = next+1; j < STEPS.length; j++) {
       if (!stepDone[j]) {
-        actualStart[j] = STEPS[j].nextDay ? nextDayAt630() : actualStart[j-1] + minMs(STEPS[j-1].dur);
+        actualStart[j] = STEPS[j].nextDay
+          ? nextDayAt630()
+          : actualStart[j-1] + minMs(STEPS[j-1].dur);
       }
     }
-    activeStep = next;
-    cdTarget = actualStart[next] + minMs(STEPS[next].dur);
-    countdownIv = setInterval(tickCountdown, 1000);
-    for (let j = next; j < STEPS.length; j++) { if (alarmOn[j]) scheduleAlarm(j); }
-  } else {
-    activeStep = -1; cdTarget = null;
   }
   renderSchedule();
-  if (activeStep !== -1) {
-    setTimeout(() => {
-      const el = document.getElementById(`step-${activeStep}`);
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 120);
-  }
 }
 
 // ── COUNTDOWN ─────────────────────────────────────────────────────────────────
@@ -1196,9 +1322,9 @@ initNotifications();
 
 // ── RESET ─────────────────────────────────────────────────────────────────────
 function resetAll() {
-  stepDone = new Array(STEPS.length).fill(false);
-  alarmOn  = new Array(STEPS.length).fill(false);
-  activeStep = -1; cdTarget = null;
+  stepDone    = new Array(STEPS.length).fill(false);
+  alarmOn     = new Array(STEPS.length).fill(false);
+  activeStep  = -1; cdTarget = null;
   if (countdownIv) { clearInterval(countdownIv); countdownIv = null; }
   Object.values(alarmTimers).forEach(t => clearTimeout(t)); alarmTimers = {};
   actualStart = new Array(STEPS.length).fill(null);
